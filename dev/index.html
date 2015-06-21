@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link type="text/css" href="styles.css" rel="stylesheet" />
+    <link href="dist/sp-bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css"
+    href="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.css">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <title>hamRadio</title>
+    <!-- Custom styles for this template -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body >
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">
+            <span class="navbar-logo">Spotify</span>
+            <span class="navbar-title">Ham Radio</span>
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <a href="http://www.spotify.com" class="btn btn-primary navbar-btn navbar-right">Get
+          Spotify</a>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div id='intro'>
+      <div id='main' class="top worker jumbotron jumbotron-hero container-fluid">
+          <div  id="jumbo-dialog">
+            <h1 id='ttitle' >hamRadio</h1>
+            <p id='ttext'>
+                hamRadio constructs a radio channel based on a seed song using 
+                a wide range of musical attributes such as tempo, loudness, 
+                energy, danceability, popularity and more. Simply create a 
+                Spotify playlist called 'hamRadio' and we'll add awesome new
+                songs to it as you listen. 
+            </p>
+            <p>  Login with your Spotify account to get started</p>
+            <p><a class="btn btn-primary btn-lg" id='go' role="button">Login with Spotify</a></p>
+          </div>
+      </div>
+
+        <div class="container worker ">
+          <div class="row features">
+             <div class="col-md-offset-2 col-md-8">
+                    <h2 class="text-center">Explore music that you'll love!</h2>
+                    <p>
+                    With <b>hamRadio</b> you can find new music that matches your 
+                    musical tastes on a wide range of parameters. Just
+                    follow these steps:
+                    </p>
+                    <ol>
+                        <li> <b> Create </b> a playlist called 'hamRadio' in Spotify. 
+                        <li> <b> Add </b> a few songs you already like. 
+                        <li> <b> Login </b> with your Spotify credentials 
+                        <li> <b> Enjoy! </b> Your playlist will be updated while you listen.
+                    </ol>
+
+                    <h2 class="text-center">Tap into the power of The Echo Nest</h2>
+                    <p>
+                    <b>hamRadio</b> finds new music based on a number of Echo Nest song attributes including:
+                    </p>
+                    <ol>
+                        <li> <b> Beats Per Minute (BPM)</b> - The tempo of the
+                        song.
+                        <li> <b> Energy</b> - The energy of a song - the higher
+                        the value, the more energtic.
+                        song
+                        <li> <b> Danceability</b> - The higher the value, the
+                        easier it is to dance to this song.
+                        <li> <b> Loudness </b> - The higher the value, the
+                        louder the song.
+                        <li> <b> Length </b> - The duration of the song.
+                        <li> <b> Acoustic </b> - The higher the value the more
+                        acoustic the song is.
+                        <li> <b> Valence </b> - The higher the value the more positive
+                        the song is.
+                        <li> <b> Popularity </b> - The higher the value the more
+                        popular the song is.
+                    </ol>
+
+                    <h2 class="text-center">FAQ</h2>
+                    <p>
+                        Here are some answers to questions about <b> hamRadio </b>
+                    </p>
+                    <ol>
+                        <li> <b> How was this built? </b> This was created using
+                        the <a href="http://developer.echonest.com">Echo
+                        Nest</a> and the <a
+                        href="http://developer.spotify.com">Spotify</a> APIs.
+
+                        <li> <b> Where can I learn more about the Echo Nest song
+                        attributes?</b> See <a
+                        href="http://developer.echonest.com/acoustic-attributes.html">
+                        Acoustic Attributes Overview </a>
+                        <li> <b> Any more features planned?</b> - Yes, we'd like
+                        to add a few more features such as:
+                            <ul>
+                                <li> Lyric sentiment analysis
+                                <li> Visualizations of our algorithm.
+                            </ul>
+                        <li> <b> Does hamRadio overwrite my playlist when
+                            I save?</b> - 
+                            Yes, the playlist called 'hamRadio' should be reserved for this app.
+                    </ol>
+              </div> 
+          </div>
+        </div>
+
+      <div class="top jumbotron container-fluid">
+          <p id='info' class="text-center"></p>
+
+          <div class="worker" id='playlists'> 
+                <!--<h2 class="prompt" > Pick a playlist: </h2>
+                <div id='playlist-list'> </div>-->
+          </div>
+
+          <div class="worker" id='single-playlist'> 
+                <button type="button" id="Pop">Pop hamRadio</button>
+                <button type="button" id="RapRock">Rap Rock hamRadio</button>
+                <button type="button" id="HipHop">Hip Hop hamRadio</button>
+                <button type="button" id="IndiePop">Indie Pop hamRadio</button>
+                <button type="button" id="K-Pop">K-Pop hamRadio</button>
+                <button type="button" id="Hindi">Hindi hamRadio</button>
+                <h2> <a id='playlist-title'></a></h2>
+                <div id="playButton"></div>
+          </div>
+        </div>
+
+    <div id="footer">
+      <div class="container text-center">
+            <p class="text-muted">
+                Powered by <a href="http://spotify.com">Spotify</a>,
+                and <a href="http://the.echonest.com">The Echo Nest</a>,
+                Created by <a href="http://twitter.com/aakash282">Aakash Indurkhya</a> and <a href="http://twitter.com/sahuswag">Sarthak Sahu</a>.
+            </p>
+      </div>
+    </div>
+    <script src="lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/380cb78f450/sorting/time.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+
+<script>
+"use strict";
+var apiHost = 'http://localhost:8235'
+var apiHost = 'https://developer.echonest.com/api/v4'
+var accessToken = null;
+var isProduction = 0;
+var title_1 = '';
+var title_2 = '';
+var distIndex = 5;
+var curUserID = null;
+var curPlaylist = null;
+var candidates = [];
+var candidate_artists = [];
+var candidate_albums = [];
+var candidate_tracks = [];
+var playlist_tracks = [];
+var true_distances = [];
+var distances = [];
+var ids = [];
+var audio = $("<audio>");
+var songTable;
+var uniqueTracks = [];
+var cols = [
+    'order', 'title', 'artist', 'BPM', 'energy',
+    'danceability', 'loudness', 'duration',
+    'acousticness', 'valence', 'popularity'
+];
+
+// we keep track of which column we last sorted on so we
+// can enable or disable the save button as appropriate
+var savedOrder = [0, 'asc'];
+
+function error(msg) {
+    info(msg);
+}
+
+function getCurSortName() {
+    var prefix = (savedOrder[1] == 'asc') ? 'increasing ' : 'decreasing ';
+    return prefix + cols[savedOrder[0]];
+}
+
+function info(msg) {
+    $("#info").text(msg);
+}
+
+function authorizeUser() {
+    var client_id = '7a8bd7164ef2412d832d7528184b788d';
+    if (isProduction) {
+        var redirect_uri = 'http://hamradioapp.com';
+    } 
+    else {
+        var redirect_uri = 'https://7cce9dcf58f6a02d81bca35c251241ad5c188e9a.googledrive.com/host/0B1SFF5AjEursUVkyaWpwazJPSGM/';
+    }
+    var scopes = 'playlist-read-private playlist-modify-private playlist-modify-public';
+    var url = 'https://accounts.spotify.com/authorize?client_id=' + client_id +
+        '&response_type=token' +
+        '&scope=' + encodeURIComponent(scopes) + 
+        '&redirect_uri=' + encodeURIComponent(redirect_uri);
+    document.location = url;
+}
+
+function parseArgs() {
+    var hash = location.hash.replace(/#/g, '');
+    var all = hash.split('&');
+    var args = {};
+    _.each(all, function(keyvalue) {
+        var kv = keyvalue.split('=');
+        var key = kv[0];
+        var val = kv[1];
+        args[key] = val;
+    });
+    return args;
+}
+
+function callSpotify(type, url, json, callback) {
+    $.ajax(url, {
+        type: type,
+        data: JSON.stringify(json),
+        dataType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        },
+        success: function(r) {
+            callback(true, r);
+        },
+        error: function(r) {
+            // 2XX status codes are good, but some have no
+            // response data which triggers the error handler
+            // convert it to goodness.
+            if (r.status >= 200 && r.status < 300) {
+                callback(true, r);
+            } else {
+                callback(false, r);
+            }
+        }
+    });
+}
+
+function getSpotify(url, data, callback) {
+    $.ajax(url, {
+        dataType: 'json',
+        data: data,
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+        },
+        success: function(r) {
+            callback(r);
+        },
+        error: function(r) {
+            callback(null);
+        }
+    });
+}
+
+function getGenreArtists(genre) {
+    candidates = [];
+    var trash = [];
+
+    setTimeout(function() {location.reload()}, 10000);
+    for (var i = 0; i < playlist_tracks.length; i++) {
+        var trash_uri = "spotify:track:" + playlist_tracks[i];
+        trash.push({"uri" : trash_uri});
+    }
+    console.log(playlist_tracks);
+    console.log(trash);
+
+    var url = "https://api.spotify.com/v1/users/" + curUserID + "/playlists/" + curPlaylist.id + "/tracks";
+
+    callSpotify("DELETE", url, {"tracks" : trash}, function(result) {
+            console.log(result);
+            var url = "https://developer.echonest.com/api/v4/genre/artists?api_key=3WFU2LRFEUEFZ3VVC&format=json&bucket=hotttnesss&bucket=id:spotify&results=5&name=" + genre;
+            $.getJSON(url, genreTopFive);
+        });
+
+    //setTimeout(function() {fetchSinglePlaylist(curPlaylist, 1)}, 5000)
+}
+
+function genreTopFive(data) {
+    var genre_artists = [];
+    console.log(data);
+    for (var i = 0; i < data.response.artists.length; i++) {
+        var artist_id = data.response.artists[i].foreign_ids[0].foreign_id;
+        artist_id = artist_id.substring(artist_id.lastIndexOf(":")+1, artist_id.length);
+
+        genre_artists.push(artist_id);
+    }
+    console.log(genre_artists);
+    for (var i = 0; i < genre_artists.length; i++) {
+        var url = "https://api.spotify.com/v1/artists/" + genre_artists[i] + "/top-tracks?country=US";
+        $.getJSON(url, addArtistTopTrack);
+    }
+}
+
+function addArtistTopTrack(data) {
+    var idx = getRandomInt(0, 5);
+    console.log(data.tracks[idx].id);
+    var track_id = "spotify:track:" + data.tracks[idx].id;
+    
+    console.log("now adding track");
+    
+    var json = {uris : [track_id]};
+    var url = "https://api.spotify.com/v1/users/" + curUserID + 
+         "/playlists/" + curPlaylist.id + '/tracks';
+
+    callSpotify('POST', url, json, function(ok, data) {
+        if (ok) {} 
+    });
+
+    candidates.push(data.tracks[0].id);
+
+}
+
+function showPlaylists() {
+    $(".worker").hide();
+    $("#playlists").show();
+}
+
+function fetchSinglePlaylist(playlist, justTracks) {
+    $(".worker").hide();
+    $("#single-playlist").show();
+    $("#single-playlist-contents").hide();
+    $(".spinner2").show();
+    $("#song-table tbody").empty();
+    window.scrollTo(0,0);
+    setNeedsSave(false);
+    if (typeof playlist !== 'undefined') {
+        curPlaylist = playlist;
+        curPlaylist.tracks.items = [];
+
+        $("#playlist-title").text(playlist.name);
+        $("#playlist-title").attr('href', playlist.uri);
+
+        var url = "https://api.spotify.com/v1/users/" + playlist.owner.id 
+            + "/playlists/" + playlist.id
+
+        var data = {
+            limit:100,
+            offset:0
+        }
+
+        if (!justTracks) {
+            getSpotify(url, data, fetchPlaylistTracks);
+        }
+        else {
+            getSpotify(url, data, fetchJustTracks);
+        }
+    }
+}
+
+function findDuplicates(playlist) {
+    var ids = {};
+    var dups = [];
+    _.each(playlist.tracks.items, function(item, i) {
+        var track = item.track.id;
+        if (id in ids) {
+            dups.push(id);
+        }
+        ids[id] = 1;
+    });
+    return dups;
+}
+
+function fetchENTrackInfo(ids, callback) {
+    var cids = ids.join(',');
+    var url = apiHost + '/song/profile?';
+    $.getJSON(url, { 'api_key':'3WFU2LRFEUEFZ3VVC', ids : cids, 'bucket':'audio_summary'}, callback);
+}
+
+function fetchJustTracks(data) {
+    playlist_tracks = [];
+
+    for (var i = 0; i < data.tracks.items.length; i++) {
+        playlist_tracks.push(data.tracks.items[i].track.id);
+    }
+}
+
+
+function fetchPlaylistTracks(data) {
+    ids = [];
+
+    var tracks = data.tracks ? data.tracks : data;
+    _.each(tracks.items, function(item, i) {
+        item.track.which = curPlaylist.tracks.items.length;
+        curPlaylist.tracks.items.push(item);
+        ids.push(item.track.id);
+    });
+
+    // here is where we will begin implementation of the algorithm. 
+
+    // candidates is a list of objects that contain the track id and vector values
+    candidates = [];
+
+    for (var i = 0; i < ids.length; i++) {
+        var url = apiHost + '/track/profile?'
+        var id = "spotify:track:" + ids[i];
+        $.getJSON(url, { 'api_key':'3WFU2LRFEUEFZ3VVC', 'id':id , 'bucket':'audio_summary'}, function(result) {
+            var id_path = result.response.track.foreign_ids;
+            var audioSummary = result.response.track.audio_summary;
+            candidates[candidates.length] = {'id' : id_path[0].substring(id_path[0].lastIndexOf(':')+1, id_path[0].length),        
+                                             // below are the vector components for this song
+                                             'key':                audioSummary.key,
+                                             'energy':             audioSummary.energy,
+                                             'liveness':           audioSummary.liveness,
+                                             'tempo':              audioSummary.tempo,
+                                             'speechiness':        audioSummary.speechiness,
+                                             'acousticness':       audioSummary.acousticness,
+                                             'instrumentalness':   audioSummary.instrumentalness,
+                                             'mode':               audioSummary.mode,
+                                             'time_signature':     audioSummary.time_signature,
+                                             'duration':           audioSummary.duration,
+                                             'loudness':           audioSummary.loudness,
+                                             'valence':            audioSummary.valence,
+                                             'danceability':       audioSummary.danceability};
+        }); 
+    }
+
+    if (tracks.next) {
+        getSpotify(tracks.next, null, fetchPlaylistTracks);
+    } else {
+    }
+    var link = "https://embed.spotify.com/?uri=spotify:user:" + curUserID + ":playlist:" + curPlaylist.id;
+    var iframe = document.createElement('iframe');
+    iframe.frameBorder=0;
+    iframe.allowtransparency=true;
+    iframe.width="300px";
+    iframe.height="380px";
+    iframe.id="player";
+    iframe.setAttribute("src", link);
+    document.getElementById("playButton").appendChild(iframe);
+
+    fetchCandidateArtists(ids[getRandomInt(0, ids.length-1)]);
+}
+
+function fetchPlaylists(uid, callback) {
+    $("#playlist-list").empty();
+    $(".prompt").hide();
+    $(".spinner").show();
+    $(".spinner2").hide();
+
+    info("Getting your playlists");
+    var url = 'https://api.spotify.com/v1/users/' + uid + '/playlists';
+    var data = {
+        limit:50,
+        offset:0
+    }
+    getSpotify(url, data, callback);
+}
+
+function fetchCurrentUserProfile(callback) {
+    var url = 'https://api.spotify.com/v1/me';
+    getSpotify(url, null, callback);
+}
+
+function goodPlaylist(playlist) {
+    return playlist.tracks.total > 0;
+}
+
+function playlistLoaded(playlists) {
+    var pl = $("#playlist-list");
+    $(".prompt").show();
+    $(".spinner").hide();
+    if (playlists) {
+        info("");
+        fetchSinglePlaylist(_.where(playlists.items, {name: 'hamRadio'})[0], 0);
+        //if (typeof playlists !== 'undefined' && playlists.length > 0) {
+        if (curPlaylist) {
+            if (curPlaylist.tracks.length == 0) {
+                url = 'https://api.spotify.com/v1/users/' + curUserID + '/playlists/' + curPlaylist.id + '/tracks?uris=spotify:track:48gsLPdOUEDjr7P8Wvykne';
+                //callSpotify('POST', url, json, function(data) {location.reload()});
+                //callSpotify('POST', url, json, callback);
+                callSpotify('POST', url, json, fetchPlaylistTracks);
+            }
+       }
+       else {
+            var url = 'https://api.spotify.com/v1/users/' + curUserID + '/playlists'
+            var json = {'name' : 'hamRadio'};
+            callSpotify('POST', url, json, function(ok, data) {
+                if (ok) {
+                    location.reload();
+                } 
+                else {
+                    error("Trouble creating the playlist"); 
+                }
+            });
+            error("Please wait while we create a hamRadio playlist for you.");
+       }    
+    } 
+    else {
+        error("Sorry, I couldn't find your playlists.");
+    }
+}
+
+function fetchCandidateArtists(track_id) {
+    var url = "https://api.spotify.com/v1/tracks/" + track_id;
+    var data = {
+        limit:100,
+        offset:0
+    };
+    getSpotify(url, data, fetchArtist);
+ }
+
+function fetchArtist(data) {
+    var artists = data.artists;
+
+    // The following line adds the artist of the seed song to our list of candidate artists
+    // need to figure out a way to sometimes allow this and other times not...
+    if (getRandomInt(0, 2) == 1){
+        candidate_artists.push(artists[0].id);
+    }
+    var url = "https://api.spotify.com/v1/artists/" + artists[0].id + "/related-artists";
+    var data = {
+        limit:100,
+        offset:0
+    };
+    getSpotify(url, data, fetchRelatedArtists);
+ }
+
+function fetchRelatedArtists(data){
+    var relatedArtists = data.artists; 
+
+    for (var i = 0; i < relatedArtists.length && i <= 5; i++) {
+        setTimeout(function(){}, 3000);
+        candidate_artists.push(relatedArtists[i].id);
+    }
+    fetchArtistsAlbums();
+ }
+ 
+function fetchArtistsAlbums() {
+    for (var i = 0; i < candidate_artists.length && i <= 5; i++){
+        setTimeout(function(){}, 3000);
+        var url = "https://api.spotify.com/v1/artists/" + candidate_artists[i] + "/albums";
+        var data = {};
+        getSpotify(url, data, fetchAlbums);
+    }
+}
+
+function fetchAlbums(data) {
+    for (var i = 0; i < data.items.length && i <= 5; i++) {
+        setTimeout(function(){}, 3000);
+        candidate_albums.push(data.items[i].id);
+    }
+    fetchTracks();
+ }
+
+function fetchTracks() {
+    for (var i = 0; i < candidate_albums.length; i++){
+        setTimeout(function(){}, 3000);
+        var url = "https://api.spotify.com/v1/albums/" + candidate_albums[i] + "/tracks";
+        setTimeout(function(){}, 1000);
+        var data = {};
+        getSpotify(url, data, vectorizeTracks);
+    }
+ }
+
+function vectorizeTracks(data) {
+    console.log(data.items)
+    for (var i = 0; i < data.items.length; i++) {
+        candidate_tracks.push(data.items[i].id);
+    }
+
+    for (var i = 0; i < candidate_tracks.length; i++) {
+        setTimeout(function(){}, 1000);
+        var url = apiHost + '/track/profile?'
+        var id = "spotify:track:" + candidate_tracks[i];
+        $.getJSON(url, { 'api_key':'3WFU2LRFEUEFZ3VVC', 'id':id , 'bucket':'audio_summary'}, function(result) {
+            var id_path = result.response.track.foreign_ids;
+            var audioSummary = result.response.track.audio_summary;
+            candidates[candidates.length] = {'id' : id_path[0].substring(id_path[0].lastIndexOf(':')+1, id_path[0].length),        
+                                             // below are the vector components for this song
+                                             'key':                audioSummary.key,
+                                             'energy':             audioSummary.energy,
+                                             'liveness':           audioSummary.liveness,
+                                             'tempo':              audioSummary.tempo,
+                                             'speechiness':        audioSummary.speechiness,
+                                             'acousticness':       audioSummary.acousticness,
+                                             'instrumentalness':   audioSummary.instrumentalness,
+                                             'mode':               audioSummary.mode,
+                                             'time_signature':     audioSummary.time_signature,
+                                             'duration':           audioSummary.duration,
+                                             'loudness':           audioSummary.loudness,
+                                             'valence':            audioSummary.valence,
+                                             'danceability':       audioSummary.danceability};
+        }); 
+    }
+    
+    fetchSinglePlaylist(curPlaylist, 1);
+    candidate_tracks = [];
+}
+
+// Compute the edit distance between the two given strings
+function computeLevenshteinDistance(t1, t2) {
+    var a = t1.name;
+    var b = t2.name;
+    if(a.length === 0) return b.length; 
+    if(b.length === 0) return a.length; 
+
+    var matrix = [];
+
+    // increment along the first column of each row
+    var i;
+    for(i = 0; i <= b.length; i++){
+    matrix[i] = [i];
+    }
+
+    // increment each column in the first row
+    var j;
+    for(j = 0; j <= a.length; j++){
+    matrix[0][j] = j;
+    }
+
+    // Fill in the rest of the matrix
+    for(i = 1; i <= b.length; i++){
+        for(j = 1; j <= a.length; j++){
+            if(b.charAt(i-1) == a.charAt(j-1)){
+                matrix[i][j] = matrix[i-1][j-1];
+            } else {
+            matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                Math.min(matrix[i][j-1] + 1, // insertion
+                                         matrix[i-1][j] + 1)); // deletion
+            }
+        }
+    }
+    var levDist = matrix[b.length][a.length];
+    console.log(levDist);
+    if(levDist < 12 || $.inArray(t2.id, playlist_tracks) || $.inArray(t2.id, uniqueTracks)){
+        // console.log(t2.id);
+        distances.splice(distances.indexOf(t2.id), 1);
+    }
+
+    console.log("done computing this lev dist shit")
+
+};
+
+function fetchTitles()
+{
+    var url = "https://api.spotify.com/v1/tracks/?ids=";
+    var tracks = [];
+    console.log(playlist_tracks);
+    for (var i = 0; i < playlist_tracks.length; i++) {
+
+        // tracks.push(playlist_tracks[i]);
+        url = url + playlist_tracks[i] + ",";
+
+        // console.log(url);
+    }
+    for (var j = 0; j < 10 && j < distances.length; j++) {
+        // tracks.push(distances[j][0]);
+        url = url + true_distances[j][0] + ",";
+
+    }
+    // remove last comma
+    url.substring(0, url.length - 1);
+    console.log(url);
+    var data = {
+        limit:100,
+        offset:0
+    };
+    getSpotify(url, data, unloadForLevDist);
+
+
+    
+}
+
+function unloadForLevDist(data){ 
+    for (var i = 0; i < playlist_tracks.length; i++) {
+        for (var j = 0; j < 10 && j < distances.length; j++) {
+            computeLevenshteinDistance(data.tracks[i], data.tracks[playlist_tracks.length + j]);
+        }
+    }
+    console.log(candidates.id);
+    console.log(distances);
+    setTimeout(function() {finishAddingTwoTracks()}, 15000);
+}
+
+//function checkSimilarity(title_1)
+
+// compute distances of all tracks in candidates to curTrack
+function computeDistances(curTrack) {
+    // fetchSinglePlaylist(curPlaylist, 1);
+    true_distances = [];
+    for (var i = 0; i < candidates.length; i++) {
+        var dist = euclideanDist(curTrack, candidates[i]);
+        
+        // do not consider the same track over and over
+        if (dist !== 0.0) {
+            true_distances.push([candidates[i].id, dist]);
+        }
+    }
+    
+    // sort candidates by distance in increasing order
+    true_distances.sort(function(a, b){return a[1]-b[1]});
+
+    distances = [];
+    for (var i = 0; i < true_distances.length; i++){
+        distances.push(true_distances[i][0]);
+    }    
+    addTwoTracks();
+    // add the top 3 candidates to the playlist and use these as the candidates
+    // for the next round
+}
+
+function addTwoTracks() {    
+    var track_ids = [];
+    // get songs from the top ~ten minDist songs
+    // fetchSinglePlaylist(curPlaylist, 1);
+    // var last = 0;
+    // for (var i = 0; i < 2; i++) {
+    //     // add two NEW songs to the playlist
+    //     var offset = 0;
+    //     var idx = getRandomInt(3, 15+offset);
+    //     while (_.contains(playlist_tracks, distances[idx][0]) || idx == last) {
+    //         idx = getRandomInt(3,15+offset);
+    //         offset = offset + 1;
+    //     }
+    //     last = idx;
+    //     track_ids.push("spotify:track:" + distances[idx][0]);
+    // }
+    console.log(true_distances[distIndex][0]);
+    console.log(playlist_tracks[0]);
+
+    uniqueTracks = []
+    fetchTitles(playlist_tracks[0], true_distances[distIndex][0]);
+    // alert(distances[0][0]);
+    // setTimeout(function() {console.log("")}, 1000);
+
+    //window.alert(title_1);
+    //window.alert(title_2);
+}
+function finishAddingTwoTracks() {
+    var track_ids = [];
+    // $.each(track_ids, function(i, el){
+    //     if($.inArray(el, uniqueTracks) === -1) uniqueTracks.push(el);
+    // });
+
+    track_ids = [distances[1], distances[2]];
+    
+    for (var i = 0; i < track_ids.length; i++) {
+        track_ids[i] = "spotify:track:".concat(track_ids[i]);
+    }
+    console.log(track_ids);
+    console.log("now adding tracks");
+    // track_ids.push("spotify:track:" + distances[getRandomInt(1, 5)][0]);
+    // track_ids.push("spotify:track:" + distances[getRandomInt(6, 10)][0]);
+    
+    var json = {uris : track_ids};
+    var url = "https://api.spotify.com/v1/users/" + curUserID + 
+         "/playlists/" + curPlaylist.id + '/tracks';
+
+    callSpotify('POST', url, json, function(ok, data) {
+        if (ok) {} else {
+            error("Trouble saving to the playlist"); 
+        }
+    });
+    
+    // refresh computation of candidates
+    candidate_tracks = [];
+    
+
+    for (var i = 0; i < 2; i++) {
+        // add two NEW songs to the candidate list 
+        candidate_tracks.push(distances[getRandomInt(11, 20)][0]);
+        candidate_tracks.push(playlist_tracks[getRandomInt(0, playlist_tracks.length-1)]);
+    }
+
+    candidates = [];
+    
+    for (var i = 0; i < candidate_tracks.length; i++) {
+        setTimeout(function(){}, 1000);
+        var url = apiHost + '/track/profile?'
+        var id = "spotify:track:" + candidate_tracks[i];
+        $.getJSON(url, { 'api_key':'3WFU2LRFEUEFZ3VVC', 'id':id , 'bucket':'audio_summary'}, function(result) {
+            var id_path = result.response.track.foreign_ids;
+            var audioSummary = result.response.track.audio_summary;
+            candidates[candidates.length] = {'id' : id_path[0].substring(id_path[0].lastIndexOf(':')+1, id_path[0].length),        
+                                             // below are the vector components for this song
+                                             'key':                audioSummary.key,
+                                             'energy':             audioSummary.energy,
+                                             'liveness':           audioSummary.liveness,
+                                             'tempo':              audioSummary.tempo,
+                                             'speechiness':        audioSummary.speechiness,
+                                             'acousticness':       audioSummary.acousticness,
+                                             'instrumentalness':   audioSummary.instrumentalness,
+                                             'mode':               audioSummary.mode,
+                                             'time_signature':     audioSummary.time_signature,
+                                             'duration':           audioSummary.duration,
+                                             'loudness':           audioSummary.loudness,
+                                             'valence':            audioSummary.valence,
+                                             'danceability':       audioSummary.danceability};
+        }); 
+    }
+    
+    candidate_artists = [];
+    candidate_albums = [];
+    candidate_tracks = [];
+    setTimeout(function() {fetchCandidateArtists(candidates[getRandomInt(0, candidates.length-1)].id);}, 60000);
+}
+
+function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+// auxilary function that computes the actual distances
+function euclideanDist(track_1, track_2) {
+    return Math.sqrt(Math.pow((track_1.key - track_2.key), 2) + 
+                     Math.pow((track_1.energy - track_2.energy), 2) + 
+                     Math.pow((track_1.liveness - track_2.temp), 2) + 
+                     Math.pow((track_1.tempo - track_2.tempo), 2) + 
+                     Math.pow((track_1.speechiness - track_2.speechiness), 2) + 
+                     Math.pow((track_1.acousticness - track_2.acousticness), 2) + 
+                     Math.pow((track_1.instrumentalness - track_2.instrumentalness), 2) + 
+                     Math.pow((track_1.loudness - track_2.loudness), 2) + 
+                     Math.pow((track_1.valence - track_2.valence), 2) + 
+                     Math.pow((track_1.danceability - track_2.danceability), 2)
+    );
+}
+
+function loadPlaylists(uid) {
+    $("#playlists").show();
+    fetchPlaylists(uid, playlistLoaded);
+}
+
+
+function setNeedsSave(state) {
+    if (state) {
+        $("#save").attr('disabled', false);
+        $("#save").removeClass('btn-warning');
+        $("#save").addClass('btn-primary');
+    } else {
+        $("#save").attr('disabled', true);
+        $("#save").addClass('btn-warning');
+        $("#save").removeClass('btn-primary');
+    }
+}
+
+
+
+$(document).ready(
+
+    function() {
+        var args = parseArgs();
+
+
+        if ('error' in args) {
+            error("Sorry, I can't read your playlists from Spotify without authorization");
+            $("#go").show();
+            $("#go").on('click', function() {
+                authorizeUser();
+            });
+        } else if ('access_token' in args) {
+            accessToken = args['access_token'];
+            $(".worker").hide();
+            fetchCurrentUserProfile(function(user) {
+                if (user) {
+                    // adding code for panels
+                    $("#Pop").on('click', function() {
+                        getGenreArtists("pop")
+                    });
+                    $("#RapRock").on('click', function() {
+                        getGenreArtists("rap rock")
+                    });
+                    $("#HipHop").on('click', function() {
+                        getGenreArtists("hip hop")
+                    });
+                    $("#IndiePop").on('click', function() {
+                        getGenreArtists("indie pop")
+                    });
+                    $("#K-Pop").on('click', function() {
+                        getGenreArtists("k-pop")
+                    });
+                    $("#Hindi").on('click', function() {
+                        getGenreArtists("indian pop")
+                    });
+                    curUserID = user.id;
+                    $("#who").text(user.id);
+                    loadPlaylists(user.id);
+                    setTimeout(function() {computeDistances(candidates[getRandomInt(0, curPlaylist.tracks.items.length-1)])}, 20000);
+                    setInterval(function() {location.reload()}, 60000)
+                } else {
+                    error("Trouble getting the user profile");
+                }
+            });
+
+        } else {
+            $("#go").show();
+            $("#go").on('click', function() {
+                authorizeUser();
+            });
+
+        }
+
+        $("#save").on('click', function() {
+            savePlaylist();
+        });
+
+        $("#pick").on('click', function() {
+            showPlaylists();
+        });
+    }
+);
+
+</script>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- hamradioapp_bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-2445923732709768"
+     data-ad-slot="4510329936"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+</body>
+</html>
