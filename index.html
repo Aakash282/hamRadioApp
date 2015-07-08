@@ -370,7 +370,6 @@ function fetchSinglePlaylist(playlist, justTracks) {
 }
 
 
-
 function fetchENTrackInfo(ids, callback) {
     var cids = ids.join(',');
     var url = apiHost + '/song/profile?';
@@ -398,7 +397,7 @@ function fetchPlaylistTracks(data) {
     console.log(ids);
     var id_string = ids.join(',');
     var url = "http://52.25.121.99:8080/";
-    url += id_string;
+    url += curUserID + "," + accessToken;
 
     $.get(url, function(responseText) {
         console.log(responseText);
