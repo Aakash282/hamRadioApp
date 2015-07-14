@@ -41,13 +41,11 @@
           <div  id="jumbo-dialog">
             <h1 id='ttitle' >hamRadio</h1>
             <p id='ttext'>
-                hamRadio constructs a radio channel based on a seed song using 
-                a wide range of musical attributes such as tempo, loudness, 
-                energy, danceability, popularity and more. Simply create a 
-                Spotify playlist called 'hamRadio' and we'll add awesome new
-                songs to it as you listen. 
+                hamRadio is an interactive radio that lets you broadcast to friends and save to your Spotify account.
             </p>
-            <p>  Login with your Spotify account to get started</p>
+            <p>  <br> </p>
+            </p>
+            <p>  Login to help us get started</p>
             <p><a class="btn btn-primary btn-lg" id='go' role="button">Login with Spotify</a></p>
           </div>
       </div>
@@ -57,63 +55,12 @@
              <div class="col-md-offset-2 col-md-8">
                     <h2 class="text-center">Explore music that you'll love!</h2>
                     <p>
-                    With <b>hamRadio</b> you can find new music that matches your 
-                    musical tastes on a wide range of parameters. Just
-                    follow these steps:
+                    <b>hamRadio</b> is a radio built just for you:
                     </p>
                     <ol>
-                        <li> <b> Create </b> a playlist called 'hamRadio' in Spotify. 
-                        <li> <b> Add </b> a few songs you already like. 
-                        <li> <b> Login </b> with your Spotify credentials 
-                        <li> <b> Enjoy! </b> Your playlist will be updated while you listen.
-                    </ol>
-
-                    <h2 class="text-center">Tap into the power of The Echo Nest</h2>
-                    <p>
-                    <b>hamRadio</b> finds new music based on several Echo Nest song attributes.
-                    </p>
-<!--                     <ol>
-                        <li> <b> Beats Per Minute (BPM)</b> - The tempo of the
-                        song.
-                        <li> <b> Energy</b> - The energy of a song - the higher
-                        the value, the more energtic.
-                        song
-                        <li> <b> Danceability</b> - The higher the value, the
-                        easier it is to dance to this song.
-                        <li> <b> Loudness </b> - The higher the value, the
-                        louder the song.
-                        <li> <b> Length </b> - The duration of the song.
-                        <li> <b> Acoustic </b> - The higher the value the more
-                        acoustic the song is.
-                        <li> <b> Valence </b> - The higher the value the more positive
-                        the song is.
-                        <li> <b> Popularity </b> - The higher the value the more
-                        popular the song is.
-                    </ol> -->
-
-                    <h2 class="text-center">FAQ</h2>
-                    <p>
-                        Here are some answers to questions about <b> hamRadio </b>
-                    </p>
-                    <ol>
-                        <li> <b> How was this built? </b> This was created using
-                        the <a href="http://developer.echonest.com">Echo
-                        Nest</a> and the <a
-                        href="http://developer.spotify.com">Spotify</a> APIs.
-
-                        <!-- <li> <b> Where can I learn more about the Echo Nest song
-                        attributes?</b> See <a
-                        href="http://developer.echonest.com/acoustic-attributes.html">
-                        Acoustic Attributes Overview </a>
-                        <li> <b> Any more features planned?</b> - Yes, we'd like
-                        to add a few more features such as:
-                            <ul>
-                                <li> Lyric sentiment analysis
-                                <li> Visualizations of our algorithm.
-                            </ul>
-                        <li> <b> Does hamRadio overwrite my playlist when
-                            I save?</b> - 
-                            Yes, the playlist called 'hamRadio' should be reserved for this app. -->
+                        <li> <b> Recommendations </b> based on your musical tastes. 
+                        <li> <b> Save </b> radio sessions to a Spotify playlist for later. 
+                        <li> <b> Interactive  </b> experience lets you control hamRadio when you want. 
                     </ol>
               </div> 
           </div>
@@ -126,7 +73,7 @@
                 <!--<h2 class="prompt" > Pick a playlist: </h2>
                 <div id='playlist-list'> </div>-->
           </div>
-
+<!-- 
           <div class="worker" id='single-playlist'> 
                 <button type="button" id="Pop">Pop hamRadio</button>
                 <button type="button" id="RapRock">Rap Rock hamRadio</button>
@@ -136,15 +83,15 @@
                 <button type="button" id="Hindi">Hindi hamRadio</button>
                 <h2> <a id='playlist-title'></a></h2>
                 <div id="playButton"></div>
-          </div>
+          </div> -->
         </div>
 
     <div id="footer">
       <div class="container text-center">
             <p class="text-muted">
-                Powered by <a href="http://spotify.com">Spotify</a>,
-                and <a href="http://the.echonest.com">The Echo Nest</a>,
                 Created by <a href="http://twitter.com/aakash282">Aakash Indurkhya</a> and <a href="http://twitter.com/sahuswag">Sarthak Sahu</a>.
+                Data from <a href="http://spotify.com">Spotify</a> and <a href="http://the.echonest.com">The Echo Nest</a>.
+                
             </p>
       </div>
     </div>
@@ -386,58 +333,61 @@ function fetchJustTracks(data) {
 
 
 function fetchPlaylistTracks(data) {
-    ids = [];
+    // ids = [];
 
-    var tracks = data.tracks ? data.tracks : data;
-    _.each(tracks.items, function(item, i) {
-        item.track.which = curPlaylist.tracks.items.length;
-        curPlaylist.tracks.items.push(item);
-        ids.push(item.track.id);
-    });
-    console.log(ids);
-    var id_string = ids.join(',');
+    // var tracks = data.tracks ? data.tracks : data;
+    // _.each(tracks.items, function(item, i) {
+    //     item.track.which = curPlaylist.tracks.items.length;
+    //     curPlaylist.tracks.items.push(item);
+    //     ids.push(item.track.id);
+    // });
+    // console.log(ids);
+    // var id_string = ids.join(',');
     var url = "http://52.25.121.99:8080/";
     url += "ID/{" + curUserID + "," + accessToken + "}";
-
-    $.get(url, function(responseText) {
-        console.log(responseText);
-        var track_ids = [responseText];
+    info("Getting Profile...");
+    $.post(url);
+    // $.post(url, function(responseText) {
+    //     console.log("Thanks")
+    //     // console.log(responseText);
+    //     // var track_ids = [responseText];
     
-        for (var i = 0; i < track_ids.length; i++) {
-            track_ids[i] = "spotify:track:".concat(track_ids[i]);
-        }
+    //     // for (var i = 0; i < track_ids.length; i++) {
+    //     //     track_ids[i] = "spotify:track:".concat(track_ids[i]);
+    //     // }
 
-        console.log(track_ids);
-        console.log("now adding tracks");
+    //     // console.log(track_ids);
+    //     // console.log("now adding tracks");
 
         
-        var json = {uris : track_ids};
-        var url = "https://api.spotify.com/v1/users/" + curUserID + 
-             "/playlists/" + curPlaylist.id + '/tracks';
+    //     // var json = {uris : track_ids};
+    //     // var url = "https://api.spotify.com/v1/users/" + curUserID + 
+    //     //      "/playlists/" + curPlaylist.id + '/tracks';
 
-        callSpotify('POST', url, json, function(ok, data) {
-            if (ok) {} else {
-                error("Trouble saving to the playlist"); 
-            }
-        });
-        firstTime = 1;
-        setTimeout(function() {fetchSinglePlaylist(curPlaylist, 0)}, 60000);
-    });
+    //     // callSpotify('POST', url, json, function(ok, data) {
+    //     //     if (ok) {} else {
+    //     //         error("Trouble saving to the playlist"); 
+    //     //     }
+    //     // });
+    //     firstTime = 1;
+    //     setTimeout(function() {fetchSinglePlaylist(curPlaylist, 0)}, 60000);
+    // });
+    info("We need all the data we can get. This will help us make recommendations. Thanks!");
 
 
-    if (!firstTime) {
-        getSpotify(tracks.next, null, fetchPlaylistTracks);
+    // if (!firstTime) {
+    //     // getSpotify(tracks.next, null, fetchPlaylistTracks);
 
-        var link = "https://embed.spotify.com/?uri=spotify:user:" + curUserID + ":playlist:" + curPlaylist.id + "&view=coverart";
-        var iframe = document.createElement('iframe');
-        iframe.frameBorder=0;
-        iframe.allowtransparency=true;
-        iframe.width="450px";
-        iframe.height="570px";
-        iframe.id="player";
-        iframe.setAttribute("src", link);
-        document.getElementById("playButton").appendChild(iframe);
-    }
+    // //     var link = "https://embed.spotify.com/?uri=spotify:user:" + curUserID + ":playlist:" + curPlaylist.id + "&view=coverart";
+    // //     var iframe = document.createElement('iframe');
+    // //     iframe.frameBorder=0;
+    // //     iframe.allowtransparency=true;
+    // //     iframe.width="450px";
+    // //     iframe.height="570px";
+    // //     iframe.id="player";
+    // //     iframe.setAttribute("src", link);
+    // //     document.getElementById("playButton").appendChild(iframe);
+    // }
 }
 
 function fetchPlaylists(uid, callback) {
@@ -479,19 +429,19 @@ function playlistLoaded(playlists) {
                 callSpotify('POST', url, json, fetchPlaylistTracks);
             }
        }
-       else {
-            var url = 'https://api.spotify.com/v1/users/' + curUserID + '/playlists'
-            var json = {'name' : 'hamRadio'};
-            callSpotify('POST', url, json, function(ok, data) {
-                if (ok) {
-                    location.reload();
-                } 
-                else {
-                    error("Trouble creating the playlist"); 
-                }
-            });
-            error("Please wait while we create a hamRadio playlist for you.");
-       }    
+       // else {
+       //      var url = 'https://api.spotify.com/v1/users/' + curUserID + '/playlists'
+       //      var json = {'name' : 'hamRadio'};
+       //      callSpotify('POST', url, json, function(ok, data) {
+       //          if (ok) {
+       //              location.reload();
+       //          } 
+       //          else {
+       //              error("Trouble creating the playlist"); 
+       //          }
+       //      });
+       //      error("Please wait while we create a hamRadio playlist for you.");
+       // }    
     } 
     else {
         error("Sorry, I couldn't find your playlists.");
@@ -632,29 +582,29 @@ $(document).ready(
             $(".worker").hide();
             fetchCurrentUserProfile(function(user) {
                 if (user) {
-                    // adding code for panels
-                    $("#Pop").on('click', function() {
-                        getGenreArtists("pop")
-                    });
-                    $("#RapRock").on('click', function() {
-                        getGenreArtists("rap rock")
-                    });
-                    $("#HipHop").on('click', function() {
-                        getGenreArtists("hip hop")
-                    });
-                    $("#IndiePop").on('click', function() {
-                        getGenreArtists("indie pop")
-                    });
-                    $("#K-Pop").on('click', function() {
-                        getGenreArtists("k-pop")
-                    });
-                    $("#Hindi").on('click', function() {
-                        getGenreArtists("indian pop")
-                    });
+                    // // adding code for panels
+                    // $("#Pop").on('click', function() {
+                    //     getGenreArtists("pop")
+                    // });
+                    // $("#RapRock").on('click', function() {
+                    //     getGenreArtists("rap rock")
+                    // });
+                    // $("#HipHop").on('click', function() {
+                    //     getGenreArtists("hip hop")
+                    // });
+                    // $("#IndiePop").on('click', function() {
+                    //     getGenreArtists("indie pop")
+                    // });
+                    // $("#K-Pop").on('click', function() {
+                    //     getGenreArtists("k-pop")
+                    // });
+                    // $("#Hindi").on('click', function() {
+                    //     getGenreArtists("indian pop")
+                    // });
                     curUserID = user.id;
                     $("#who").text(user.id);
-                    loadPlaylists(user.id);
-
+                    // loadPlaylists(user.id);
+                    fetchPlaylistTracks([]);
                     setInterval(function() {location.reload()}, 300000)
                 } else {
                     error("Trouble getting the user profile");
