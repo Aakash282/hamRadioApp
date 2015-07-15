@@ -1,6 +1,6 @@
 // set up SVG for D3
 var width  = 960,
-    height = 500,
+    height = 600,
     colors = d3.scale.category10();
 
 var svg = d3.select('body')
@@ -36,7 +36,7 @@ var force = d3.layout.force()
     .links(links)
     .size([width, height])
     .linkDistance(150)
-    .charge(-500)
+    .charge(-750)
     .on('tick', tick)
 
 // define arrow markers for graph links
@@ -169,7 +169,7 @@ function restart() {
     })
     .on('mousedown', function(d) {
       // disable zoom
-      svg.call(d3.behavior.zoom().on("zoom"), null);
+      // svg.call(d3.behavior.zoom().on("zoom"), null);
 
       if(d3.event.ctrlKey) return;
 
