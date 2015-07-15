@@ -10,10 +10,10 @@ var svg = d3.select('body')
   // .append('svg:g')
   //   .call(d3.behavior.zoom().on("zoom", rescale))
   //   .on("dblclick.zoom", null)
-  // .append('svg:g')
-  //   .on("mousemove", mousemove)
-  //   .on("mousedown", mousedown)
-  //   .on("mouseup", mouseup);
+  .append('svg:g')
+    .on("mousemove", mousemove)
+    .on("mousedown", mousedown)
+    .on("mouseup", mouseup);
 
 // set up initial nodes and links
 //  - nodes are known by 'id', not by index in array.
@@ -169,7 +169,7 @@ function restart() {
     })
     .on('mousedown', function(d) {
       // disable zoom
-      svg.call(d3.behavior.zoom().on("zoom"), null);
+      // svg.call(d3.behavior.zoom().on("zoom"), null);
 
       if(d3.event.ctrlKey) return;
 

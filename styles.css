@@ -1,40 +1,36 @@
 /* Sticky footer styles */
 html {
   position: relative;
-  min-height: 100%;
+
 }
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 28px;
   padding-top: 0;
+  /*height:100%;*/
   /*background:rgb(129,175,177) !important;*/
+    background: url(images/radio.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
-#footer {
+/*#footer {
   margin-top:10px;
   width: 100%;
-  height: 18px;
   font-size:12px;
-}
+
+}*/
 
 .sp-jumbotron-custom-inverse {
-  background-image: url(images/radio.jpg);
+  /*background-image: url(images/radio.jpg);*/
 }
 
 #main {
-    background-image: url(images/radio.jpg);
+    /*background-image: url(images/radio.jpg);*/
+    background: transparent;
 }   
-
-#playlists {
-    display:none;
-    font-size:18px;
-}
-
-#single-playlist {
-    display:none;
-}
-
 
 @media screen and (min-width: 768px) {
   .sp-jumbotron-custom {
@@ -43,11 +39,11 @@ body {
 
 
 .h1 {
-  margin-bottom: 42px; /* (@padding-base-vertical * 7) */
+  /*margin-bottom: 42px;  /*(@padding-base-vertical * 7) */
 }
 
 .top {
-    margin-top:66px;
+    margin-top:50px;
     position:relative;
 }
 
@@ -62,8 +58,8 @@ h3 {
 
 
 p {
-  margin-bottom: 18px; /* a little more breathing room between feature tiles in mobile
-view) */
+  margin-bottom: 18px;  a little more breathing room between feature tiles in mobile
+view) 
 }
 
 @media screen and (min-width: 992px) {
@@ -76,12 +72,8 @@ view) */
     font-size:32px;
 }
 
-#song-table tbody tr.selected {
-    background-color:#81b71a;
-}
-
 .fine-print {
-  margin-bottom: 30px; /* (@padding-base-vertical * 5) */
+  margin-bottom: 30px;  (@padding-base-vertical * 5)  
 }
 
 #go {
@@ -95,19 +87,27 @@ view) */
     width: 80%;
     margin-left:auto;
     margin-right:auto;
+    text-shadow:
+      -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
 
 }
 
 #ttitle {
     color:white;
+    text-shadow:
+      -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
 }
 
 #jumbo-dialog {
-    color:white;
-    background: rgba(50,50,50, 0.5);
+    /*color:white;*/
     border-radius:15px;
 }
-
 
 .hoverable {
     cursor: pointer;

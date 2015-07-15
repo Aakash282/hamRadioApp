@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link type="text/css" href="styles.css" rel="stylesheet" />
+    <link href="dist/sp-bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css"
+    href="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.css">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <title>hamRadio</title>
+    <!-- Custom styles for this template -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body >
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">
+            <span class="navbar-logo">Spotify</span>
+            <span class="navbar-title">Ham Radio</span>
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <a href="http://www.spotify.com" class="btn btn-primary navbar-btn navbar-right">Get
+          Spotify</a>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div id='intro'>
+      <div id='main' class="top worker jumbotron jumbotron-hero container-fluid">
+          <div  id="jumbo-dialog">
+            <h1 id='ttitle' >hamRadio</h1>
+            <p id='ttext'>
+                hamRadio is an interactive radio that lets you broadcast to friends and save to your Spotify account.
+            </p>
+            <p>  <br> </p>
+            </p>
+            <p>  Login to help us get started</p>
+            <p><a class="btn btn-primary btn-lg" id='go' role="button">Login with Spotify</a></p>
+          </div>
+      </div>
+
+        <div class="container worker ">
+          <div class="row features">
+             <div class="col-md-offset-2 col-md-8">
+                    <h2 class="text-center">Explore music that you'll love!</h2>
+                    <p>
+                    <b>hamRadio</b> is a radio built just for you:
+                    </p>
+                    <ol>
+                        <li> <b> Recommendations </b> based on your musical tastes. 
+                        <li> <b> Save </b> radio sessions to a Spotify playlist for later. 
+                        <li> <b> Interactive  </b> experience lets you control hamRadio when you want. 
+                    </ol>
+              </div> 
+          </div>
+        </div>
+
+      <div class="top jumbotron container-fluid">
+          <p id='info' class="text-center"></p>
+
+          <div class="worker" id='playlists'> 
+                <!--<h2 class="prompt" > Pick a playlist: </h2>
+                <div id='playlist-list'> </div>-->
+          </div>
+<!-- 
+          <div class="worker" id='single-playlist'> 
+                <button type="button" id="Pop">Pop hamRadio</button>
+                <button type="button" id="RapRock">Rap Rock hamRadio</button>
+                <button type="button" id="HipHop">Hip Hop hamRadio</button>
+                <button type="button" id="IndiePop">Indie Pop hamRadio</button>
+                <button type="button" id="K-Pop">K-Pop hamRadio</button>
+                <button type="button" id="Hindi">Hindi hamRadio</button>
+                <h2> <a id='playlist-title'></a></h2>
+                <div id="playButton"></div>
+          </div> -->
+        </div>
+
+    <div id="footer">
+      <div class="container text-center">
+            <p class="text-muted">
+                Created by <a href="http://twitter.com/aakash282">Aakash Indurkhya</a> and <a href="http://twitter.com/sahuswag">Sarthak Sahu</a>.
+                Data from <a href="http://spotify.com">Spotify</a> and <a href="http://the.echonest.com">The Echo Nest</a>.
+                
+            </p>
+      </div>
+    </div>
+    <script src="lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/380cb78f450/sorting/time.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+
+<script>
+"use strict";
+var apiHost = 'http://localhost:8235'
+var apiHost = 'https://developer.echonest.com/api/v4'
+var accessToken = null;
+var isProduction = 1;
+var title_1 = '';
+var title_2 = '';
+var firstTime = 0;
+var distIndex = 5;
+var curUserID = null;
+var curPlaylist = null;
+var candidates = [];
+var candidate_artists = [];
+var candidate_albums = [];
+var candidate_tracks = [];
+var playlist_tracks = [];
+var true_distances = [];
+var distances = [];
+var ids = [];
+var audio = $("<audio>");
+var songTable;
+var uniqueTracks = [];
+var cols = [
+    'order', 'title', 'artist', 'BPM', 'energy',
+    'danceability', 'loudness', 'duration',
+    'acousticness', 'valence', 'popularity'
+];
+
+// we keep track of which column we last sorted on so we
+// can enable or disable the save button as appropriate
+var savedOrder = [0, 'asc'];
+
+function error(msg) {
+    info(msg);
+}
+
+function getCurSortName() {
+    var prefix = (savedOrder[1] == 'asc') ? 'increasing ' : 'decreasing ';
+    return prefix + cols[savedOrder[0]];
+}
+
+function info(msg) {
+    $("#info").text(msg);
+}
+
+function authorizeUser() {
+    var client_id = '7a8bd7164ef2412d832d7528184b788d';
+    if (isProduction) {
+        var redirect_uri = 'http://hamradioapp.com';
+    } 
+    else {
+        var redirect_uri = 'https://7cce9dcf58f6a02d81bca35c251241ad5c188e9a.googledrive.com/host/0B1SFF5AjEursUVkyaWpwazJPSGM/';
+    }
+    var scopes = 'playlist-read-private playlist-modify-private playlist-modify-public';
+    var url = 'https://accounts.spotify.com/authorize?client_id=' + client_id +
+        '&response_type=token' +
+        '&scope=' + encodeURIComponent(scopes) + 
+        '&redirect_uri=' + encodeURIComponent(redirect_uri);
+    document.location = url;
+}
+
+function parseArgs() {
+    var hash = location.hash.replace(/#/g, '');
+    var all = hash.split('&');
+    var args = {};
+    _.each(all, function(keyvalue) {
+        var kv = keyvalue.split('=');
+        var key = kv[0];
+        var val = kv[1];
+        args[key] = val;
+    });
+    return args;
+}
+
+function callSpotify(type, url, json, callback) {
+    $.ajax(url, {
+        type: type,
+        data: JSON.stringify(json),
+        dataType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+        },
+        success: function(r) {
+            callback(true, r);
+        },
+        error: function(r) {
+            // 2XX status codes are good, but some have no
+            // response data which triggers the error handler
+            // convert it to goodness.
+            if (r.status >= 200 && r.status < 300) {
+                callback(true, r);
+            } else {
+                callback(false, r);
+            }
+        }
+    });
+}
+
+function getSpotify(url, data, callback) {
+    $.ajax(url, {
+        dataType: 'json',
+        data: data,
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+        },
+        success: function(r) {
+            callback(r);
+        },
+        error: function(r) {
+            callback(null);
+        }
+    });
+}
+
+function getGenreArtists(genre) {
+    candidates = [];
+    var trash = [];
+
+    setTimeout(function() {location.reload()}, 10000);
+    for (var i = 0; i < playlist_tracks.length; i++) {
+        var trash_uri = "spotify:track:" + playlist_tracks[i];
+        trash.push({"uri" : trash_uri});
+    }
+    console.log(playlist_tracks);
+    console.log(trash);
+
+    var url = "https://api.spotify.com/v1/users/" + curUserID + "/playlists/" + curPlaylist.id + "/tracks";
+
+    callSpotify("DELETE", url, {"tracks" : trash}, function(result) {
+            console.log(result);
+            var url = "https://developer.echonest.com/api/v4/genre/artists?api_key=3WFU2LRFEUEFZ3VVC&format=json&bucket=hotttnesss&bucket=id:spotify&results=5&name=" + genre;
+            $.getJSON(url, genreTopFive);
+        });
+
+    //setTimeout(function() {fetchSinglePlaylist(curPlaylist, 1)}, 5000)
+}
+
+function genreTopFive(data) {
+    var genre_artists = [];
+    console.log(data);
+    for (var i = 0; i < data.response.artists.length; i++) {
+        var artist_id = data.response.artists[i].foreign_ids[0].foreign_id;
+        artist_id = artist_id.substring(artist_id.lastIndexOf(":")+1, artist_id.length);
+
+        genre_artists.push(artist_id);
+    }
+    console.log(genre_artists);
+    for (var i = 0; i < genre_artists.length; i++) {
+        var url = "https://api.spotify.com/v1/artists/" + genre_artists[i] + "/top-tracks?country=US";
+        $.getJSON(url, addArtistTopTrack);
+    }
+}
+
+function addArtistTopTrack(data) {
+    var idx = getRandomInt(0, 5);
+    console.log(data.tracks[idx].id);
+    var track_id = "spotify:track:" + data.tracks[idx].id;
+    
+    console.log("now adding track");
+    
+    var json = {uris : [track_id]};
+    var url = "https://api.spotify.com/v1/users/" + curUserID + 
+         "/playlists/" + curPlaylist.id + '/tracks';
+
+    callSpotify('POST', url, json, function(ok, data) {
+        if (ok) {} 
+    });
+
+    candidates.push(data.tracks[0].id);
+
+}
+
+function showPlaylists() {
+    $(".worker").hide();
+    $("#playlists").show();
+}
+
+function fetchSinglePlaylist(playlist, justTracks) {
+    $(".worker").hide();
+    $("#single-playlist").show();
+    $("#single-playlist-contents").hide();
+    $(".spinner2").show();
+    $("#song-table tbody").empty();
+    window.scrollTo(0,0);
+    setNeedsSave(false);
+    if (typeof playlist !== 'undefined') {
+        curPlaylist = playlist;
+        curPlaylist.tracks.items = [];
+
+        $("#playlist-title").text(playlist.name);
+        $("#playlist-title").attr('href', playlist.uri);
+
+        var url = "https://api.spotify.com/v1/users/" + playlist.owner.id 
+            + "/playlists/" + playlist.id
+
+        var data = {
+            limit:100,
+            offset:0
+        }
+
+        if (!justTracks) {
+            getSpotify(url, data, fetchPlaylistTracks);
+        }
+        else {
+            getSpotify(url, data, fetchJustTracks);
+        }
+    }
+}
+
+
+function fetchENTrackInfo(ids, callback) {
+    var cids = ids.join(',');
+    var url = apiHost + '/song/profile?';
+    $.getJSON(url, { 'api_key':'3WFU2LRFEUEFZ3VVC', ids : cids, 'bucket':'audio_summary'}, callback);
+}
+
+function fetchJustTracks(data) {
+    playlist_tracks = [];
+
+    for (var i = 0; i < data.tracks.items.length; i++) {
+        playlist_tracks.push(data.tracks.items[i].track.id);
+    }
+}
+
+
+function fetchPlaylistTracks(data) {
+    // ids = [];
+
+    // var tracks = data.tracks ? data.tracks : data;
+    // _.each(tracks.items, function(item, i) {
+    //     item.track.which = curPlaylist.tracks.items.length;
+    //     curPlaylist.tracks.items.push(item);
+    //     ids.push(item.track.id);
+    // });
+    // console.log(ids);
+    // var id_string = ids.join(',');
+    var url = "http://52.25.121.99:8080/";
+    url += "ID/{" + curUserID + "," + accessToken + "}";
+    info("Getting Profile...");
+    $.post(url);
+    // $.post(url, function(responseText) {
+    //     console.log("Thanks")
+    //     // console.log(responseText);
+    //     // var track_ids = [responseText];
+    
+    //     // for (var i = 0; i < track_ids.length; i++) {
+    //     //     track_ids[i] = "spotify:track:".concat(track_ids[i]);
+    //     // }
+
+    //     // console.log(track_ids);
+    //     // console.log("now adding tracks");
+
+        
+    //     // var json = {uris : track_ids};
+    //     // var url = "https://api.spotify.com/v1/users/" + curUserID + 
+    //     //      "/playlists/" + curPlaylist.id + '/tracks';
+
+    //     // callSpotify('POST', url, json, function(ok, data) {
+    //     //     if (ok) {} else {
+    //     //         error("Trouble saving to the playlist"); 
+    //     //     }
+    //     // });
+    //     firstTime = 1;
+    //     setTimeout(function() {fetchSinglePlaylist(curPlaylist, 0)}, 60000);
+    // });
+    info("We need all the data we can get. This will help us make recommendations. Thanks!");
+
+
+    // if (!firstTime) {
+    //     // getSpotify(tracks.next, null, fetchPlaylistTracks);
+
+    // //     var link = "https://embed.spotify.com/?uri=spotify:user:" + curUserID + ":playlist:" + curPlaylist.id + "&view=coverart";
+    // //     var iframe = document.createElement('iframe');
+    // //     iframe.frameBorder=0;
+    // //     iframe.allowtransparency=true;
+    // //     iframe.width="450px";
+    // //     iframe.height="570px";
+    // //     iframe.id="player";
+    // //     iframe.setAttribute("src", link);
+    // //     document.getElementById("playButton").appendChild(iframe);
+    // }
+}
+
+function fetchPlaylists(uid, callback) {
+    $("#playlist-list").empty();
+    $(".prompt").hide();
+    $(".spinner").show();
+    $(".spinner2").hide();
+
+    info("Getting your playlists");
+    var url = 'https://api.spotify.com/v1/users/' + uid + '/playlists';
+    var data = {
+        limit:50,
+        offset:0
+    }
+    getSpotify(url, data, callback);
+}
+
+function fetchCurrentUserProfile(callback) {
+    var url = 'https://api.spotify.com/v1/me';
+    getSpotify(url, null, callback);
+}
+
+function goodPlaylist(playlist) {
+    return playlist.tracks.total > 0;
+}
+
+function playlistLoaded(playlists) {
+    var pl = $("#playlist-list");
+    $(".prompt").show();
+    $(".spinner").hide();
+    if (playlists) {
+        info("");
+        fetchSinglePlaylist(_.where(playlists.items, {name: 'hamRadio'})[0], 0);
+        //if (typeof playlists !== 'undefined' && playlists.length > 0) {
+        if (curPlaylist) {
+            if (curPlaylist.tracks.length == 0) {
+                url = 'https://api.spotify.com/v1/users/' + curUserID + '/playlists/' + curPlaylist.id + '/tracks?uris=spotify:track:48gsLPdOUEDjr7P8Wvykne';
+
+                callSpotify('POST', url, json, fetchPlaylistTracks);
+            }
+       }
+       // else {
+       //      var url = 'https://api.spotify.com/v1/users/' + curUserID + '/playlists'
+       //      var json = {'name' : 'hamRadio'};
+       //      callSpotify('POST', url, json, function(ok, data) {
+       //          if (ok) {
+       //              location.reload();
+       //          } 
+       //          else {
+       //              error("Trouble creating the playlist"); 
+       //          }
+       //      });
+       //      error("Please wait while we create a hamRadio playlist for you.");
+       // }    
+    } 
+    else {
+        error("Sorry, I couldn't find your playlists.");
+    }
+}
+
+function fetchCandidateArtists(track_id) {
+    var url = "https://api.spotify.com/v1/tracks/" + track_id;
+    var data = {
+        limit:100,
+        offset:0
+    };
+    getSpotify(url, data, fetchArtist);
+ }
+
+function fetchArtist(data) {
+    var artists = data.artists;
+
+    // The following line adds the artist of the seed song to our list of candidate artists
+    // need to figure out a way to sometimes allow this and other times not...
+    if (getRandomInt(0, 2) == 1){
+        candidate_artists.push(artists[0].id);
+    }
+    var url = "https://api.spotify.com/v1/artists/" + artists[0].id + "/related-artists";
+    var data = {
+        limit:100,
+        offset:0
+    };
+    getSpotify(url, data, fetchRelatedArtists);
+ }
+
+
+function finishAddingTwoTracks() {
+    var track_ids = [];
+    // $.each(track_ids, function(i, el){
+    //     if($.inArray(el, uniqueTracks) === -1) uniqueTracks.push(el);
+    // });
+
+    //track_ids = [distances[1], distances[2]];
+    track_ids = [distances[1]];
+    
+    for (var i = 0; i < track_ids.length; i++) {
+        track_ids[i] = "spotify:track:".concat(track_ids[i]);
+    }
+    console.log(track_ids);
+    console.log("now adding tracks");
+    // track_ids.push("spotify:track:" + distances[getRandomInt(1, 5)][0]);
+    // track_ids.push("spotify:track:" + distances[getRandomInt(6, 10)][0]);
+    
+    var json = {uris : track_ids};
+    var url = "https://api.spotify.com/v1/users/" + curUserID + 
+         "/playlists/" + curPlaylist.id + '/tracks';
+
+    callSpotify('POST', url, json, function(ok, data) {
+        if (ok) {} else {
+            error("Trouble saving to the playlist"); 
+        }
+    });
+    
+    // refresh computation of candidates
+    candidate_tracks = [];
+    
+
+    for (var i = 0; i < 1; i++) {
+        // add one NEW song to the candidate list 
+        candidate_tracks.push(distances[getRandomInt(11, 20)][0]);
+        candidate_tracks.push(playlist_tracks[getRandomInt(0, playlist_tracks.length-1)]);
+    }
+
+    candidates = [];
+    
+    for (var i = 0; i < candidate_tracks.length; i++) {
+        setTimeout(function(){}, 1000);
+        var url = apiHost + '/track/profile?'
+        var id = "spotify:track:" + candidate_tracks[i];
+        $.getJSON(url, { 'api_key':'ULUECAILWIK1KJFED', 'id':id , 'bucket':'audio_summary'}, function(result) {
+            var id_path = result.response.track.foreign_ids;
+            var audioSummary = result.response.track.audio_summary;
+            candidates[candidates.length] = {'id' : id_path[0].substring(id_path[0].lastIndexOf(':')+1, id_path[0].length),        
+                                             // below are the vector components for this song
+                                             'key':                audioSummary.key,
+                                             'energy':             audioSummary.energy,
+                                             'liveness':           audioSummary.liveness,
+                                             'tempo':              audioSummary.tempo,
+                                             'speechiness':        audioSummary.speechiness,
+                                             'acousticness':       audioSummary.acousticness,
+                                             'instrumentalness':   audioSummary.instrumentalness,
+                                             'mode':               audioSummary.mode,
+                                             'time_signature':     audioSummary.time_signature,
+                                             'duration':           audioSummary.duration,
+                                             'loudness':           audioSummary.loudness,
+                                             'valence':            audioSummary.valence,
+                                             'danceability':       audioSummary.danceability};
+        }); 
+    }
+    
+    candidate_artists = [];
+    candidate_albums = [];
+    candidate_tracks = [];
+    setTimeout(function() {fetchCandidateArtists(candidates[getRandomInt(0, candidates.length-1)].id);}, 60000);
+}
+
+
+function loadPlaylists(uid) {
+    $("#playlists").show();
+    fetchPlaylists(uid, playlistLoaded);
+}
+
+
+function setNeedsSave(state) {
+    if (state) {
+        $("#save").attr('disabled', false);
+        $("#save").removeClass('btn-warning');
+        $("#save").addClass('btn-primary');
+    } else {
+        $("#save").attr('disabled', true);
+        $("#save").addClass('btn-warning');
+        $("#save").removeClass('btn-primary');
+    }
+}
+
+
+
+$(document).ready(
+
+    function() {
+        var args = parseArgs();
+
+
+        if ('error' in args) {
+            error("Sorry, I can't read your playlists from Spotify without authorization");
+            $("#go").show();
+            $("#go").on('click', function() {
+                authorizeUser();
+            });
+        } else if ('access_token' in args) {
+            accessToken = args['access_token'];
+            $(".worker").hide();
+            fetchCurrentUserProfile(function(user) {
+                if (user) {
+                    // // adding code for panels
+                    // $("#Pop").on('click', function() {
+                    //     getGenreArtists("pop")
+                    // });
+                    // $("#RapRock").on('click', function() {
+                    //     getGenreArtists("rap rock")
+                    // });
+                    // $("#HipHop").on('click', function() {
+                    //     getGenreArtists("hip hop")
+                    // });
+                    // $("#IndiePop").on('click', function() {
+                    //     getGenreArtists("indie pop")
+                    // });
+                    // $("#K-Pop").on('click', function() {
+                    //     getGenreArtists("k-pop")
+                    // });
+                    // $("#Hindi").on('click', function() {
+                    //     getGenreArtists("indian pop")
+                    // });
+                    curUserID = user.id;
+                    $("#who").text(user.id);
+                    // loadPlaylists(user.id);
+                    fetchPlaylistTracks([]);
+                    setInterval(function() {location.reload()}, 300000)
+                } else {
+                    error("Trouble getting the user profile");
+                }
+            });
+
+        } else {
+            $("#go").show();
+            $("#go").on('click', function() {
+                authorizeUser();
+            });
+
+        }
+
+        $("#save").on('click', function() {
+            savePlaylist();
+        });
+
+        $("#pick").on('click', function() {
+            showPlaylists();
+        });
+    }
+);
+
+</script>
+
+<center>
+    <div id=adsense>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- hamradioapp_bottom -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-2445923732709768"
+             data-ad-slot="4510329936"></ins>
+
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</center>
+
+</body>
+</html>
