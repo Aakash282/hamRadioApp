@@ -1,106 +1,87 @@
 {
    "nodes":[
       {
-         "name":"sacthak",
-         "group":1
+         "name":"sacthak"
       },
       {
-         "name":"blakash",
-         "group":1
+         "name":"blakash"
       },
       {
-         "name":"twikimane",
-         "group":1
+         "name":"twikimane"
       },
       {
-         "name":"JD",
-         "group":1
+         "name":"JD"
       },
       {
-         "name":"habi",
-         "group":1
+         "name":"habi"
       },
       {
-         "name":"god",
-         "group":1
+         "name":"god"
       },
       {
-         "name":"smurchywurchy",
-         "group":1
+         "name":"smurchywurchy"
       },
       {
-         "name":"butters",
-         "group":1
+         "name":"butters"
       },
       {
-         "name":"bloliver",
-         "group":1
+         "name":"bloliver"
       },
       {
-         "name":"squidward",
-         "group":1
+         "name":"squidward"
+      },
+      {
+         "name":"harry paaotter"
       }
    ],
    "links":[
       {
          "source":1,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":2,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":3,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":3,
-         "target":2,
-         "value":1
+         "target":2
       },
       {
          "source":4,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":5,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":6,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":7,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":8,
-         "target":0,
-         "value":1
+         "target":0
       },
       {
          "source":9,
-         "target":3,
-         "value":1
+         "target":3
       },
       {
          "source":9,
-         "target":2,
-         "value":1
+         "target":2
       },
       {
          "source":4,
-         "target":5,
-         "value":1
+         "target":5
       }
    ]
 }
