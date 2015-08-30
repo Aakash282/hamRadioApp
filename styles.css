@@ -113,7 +113,7 @@ view)
     cursor: pointer;
 }
 
-#dialog {
+#opening-dialog {
     display:none;
     color:white;
     background: black;
