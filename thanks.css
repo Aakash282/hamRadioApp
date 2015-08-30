@@ -1,0 +1,134 @@
+/* Sticky footer styles */
+html {
+  position: relative;
+
+}
+
+body {
+  /* Margin bottom by footer height */
+  padding-top: 0;
+  /*height:100%;*/
+  /*background:rgb(129,175,177) !important;*/
+    background: url(images/concert.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/*#footer {
+  margin-top:10px;
+  width: 100%;
+  font-size:12px;
+
+}*/
+
+.sp-jumbotron-custom-inverse {
+  /*background-image: url(images/radio.jpg);*/
+}
+
+#main {
+    /*background-image: url(images/radio.jpg);*/
+    background: transparent;
+}   
+
+@media screen and (min-width: 768px) {
+  .sp-jumbotron-custom {
+  }
+}
+
+
+.h1 {
+  /*margin-bottom: 42px;  /*(@padding-base-vertical * 7) */
+}
+
+.top {
+    margin-top:50px;
+    position:relative;
+}
+
+img {
+  margin: 0 auto;
+}
+
+h3 {
+  font-weight: 600; /* @font-weight-semibold */
+  margin-top: 12px;
+}
+
+
+p {
+  margin-bottom: 18px;  a little more breathing room between feature tiles in mobile
+view) 
+}
+
+@media screen and (min-width: 992px) {
+  p {
+    margin-bottom: 12px; /* reset to default */
+  }
+}
+
+#info {
+    font-size:32px;
+}
+
+.fine-print {
+  margin-bottom: 30px;  (@padding-base-vertical * 5)  
+}
+
+#go {
+    margin-bottom:20px;
+}
+
+
+#ttext {
+    margin-top:20px;
+    margin-bottom:30px;
+    width: 80%;
+    margin-left:auto;
+    margin-right:auto;
+    color:white;
+    text-shadow:
+      -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+
+}
+
+#ttitle {
+    color:white;
+    text-shadow:
+      -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+}
+
+#thank-you-message{
+  /*display:inline-block;*/
+  margin:0;
+  background-color:rgba(0,0,0,0.5);;
+}
+#jumbo-dialog {
+    /*color:white;*/
+    border-radius:15px;
+}
+
+.hoverable {
+    cursor: pointer;
+}
+
+#dialog {
+    display:none;
+    color:white;
+    background: black;
+}
+
+.ui-dialog-osx {
+    -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px; border-width: 0 8px 8px 8px;
+}
+
+

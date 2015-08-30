@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link type="text/css" href="thanks.css" rel="stylesheet" />
+    <link href="dist/sp-bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css"
+    href="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.css">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="lib/jquery-ui.min.css">
+    <link rel="stylesheet" href="lib/jquery-ui.structure.min.css">
+    <title>hamRadio</title>
+    <!-- Custom styles for this template -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body >
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">
+            <span class="navbar-logo">Spotify</span>
+            <span class="navbar-title">Ham Radio</span>
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <!-- <button rel="#aboutUs" type="button">About hamRadio</button> -->
+          <button id="opener" class="btn btn-primary navbar-btn navbar-right">About hamRadio</button>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="dialog">
+        <p> 
+        hamRadio: The Personal Radio
+        </p>
+        <br/>
+        <p>
+        Most streaming radio services are in an unfortunate state. People deal with subpar music recommendations because there is nothing better on the market. hamRadio is different. hamRadio makes music recommendations based on music similarity, time of day, and your personal music tastes. Our recommendations can be saved as a Spotify playlist so you're never left wondering "What's that song called again?" hamRadio is also interactive. Visualize the relation between the artists and music you are listening to and take back control of whats on your radio. And when your station is too amazing to keep to yourself, you can broadcast your station to your friends via social media. 
+        </p>
+        <br/>
+        <p>
+        That is our vision, but we need your help. We need data in order to learn what makes a personalized radio great. </p>
+        <br/>
+        <p>
+        Help us revolutionize internet radio by logging in to share your data! 
+        </p>
+        <br/>
+        <p>
+        Thanks!
+        </p><p> - Aakash, Sarthak, Matt, and JD
+        </p>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div id='intro'>
+      <div id='main' class="top worker jumbotron jumbotron-hero container-fluid">
+          <div  id="jumbo-dialog">
+            <h1 id='ttitle' >Thank You!</h1>
+            <p> <br> </p>
+            <div id='thank-you-message'>
+            <p id='ttext'>We are going to change internet radio for good, but we need data in order to do it. Thank you for helping us achieve our goal!</p>
+            <p id='ttext'><a> Give us your email </a> for updates, or check back soon to see what is new! </p>
+            </div>
+            
+<!--             <p id='ttext'>
+                hamRadio is an interactive radio that lets you broadcast to friends and save to your Spotify account.
+            </p> -->
+            <p>  <br> </p>
+            </p>
+            <p> <br> </p>
+            <!-- <p><a class="btn btn-primary btn-lg" id='go' role="button">Tune in</a></p> -->
+          </div>
+      </div>
+
+    
+    <script src="lib/jquery-1.11.1.min.js"></script>
+    <!-- // <script type="text/javascript" charset="utf8" src="lib/overlay.js"></script> -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/plug-ins/380cb78f450/sorting/time.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+
+<script>
+"use strict";
+var apiHost = 'http://localhost:8235'
+var apiHost = 'https://developer.echonest.com/api/v4'
+var accessToken = null;
+var isProduction = 0;
+
+function error(msg) {
+    info(msg);
+}
+
+
+function info(msg) {
+    $("#info").text(msg);
+}
+
+function authorizeUser() {
+    var client_id = '7a8bd7164ef2412d832d7528184b788d';
+    if (isProduction) {
+        var redirect_uri = 'http://hamradioapp.com/thankyou.html';
+    } 
+    else {
+        var redirect_uri = 'https://dcbd4964eebb73e7153afe60adafa0dec713fe35.googledrive.com/host/0B5MNbV4Tpw-vflZGWmc1cnhEQllaeTZxUUpWWTlMY3dSMnFvT2stTG02eEpQNERVQ0EyNDA/';
+    }
+    var scopes = 'playlist-read-private playlist-modify-private playlist-modify-public';
+    var url = 'https://accounts.spotify.com/authorize?client_id=' + client_id +
+        '&response_type=token' +
+        '&scope=' + encodeURIComponent(scopes) + 
+        '&redirect_uri=' + encodeURIComponent(redirect_uri);
+    document.location = url;
+}
+
+function parseArgs() {
+    var hash = location.hash.replace(/#/g, '');
+    var all = hash.split('&');
+    var args = {};
+    _.each(all, function(keyvalue) {
+        var kv = keyvalue.split('=');
+        var key = kv[0];
+        var val = kv[1];
+        args[key] = val;
+    });
+    return args;
+}
+
+
+function getSpotify(url, data, callback) {
+    $.ajax(url, {
+        dataType: 'json',
+        data: data,
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+        },
+        success: function(r) {
+            callback(r);
+        },
+        error: function(r) {
+            callback(null);
+        }
+    });
+}
+
+
+
+
+function fetchPlaylistTracks(data) {
+
+    var url = "http://52.25.121.99:8080/";
+    url += "ID/{" + curUserID + "," + accessToken + "}";
+    info("Getting Profile...");
+    $.post(url);
+
+    info("We need all the data we can get. This will help us make recommendations. Thanks!");
+
+
+}
+
+
+function fetchCurrentUserProfile(callback) {
+    var url = 'https://api.spotify.com/v1/me';
+    getSpotify(url, null, callback);
+}
+
+
+
+
+
+$(document).ready(
+
+    function() {
+        var args = parseArgs();
+        //Initialize dialog
+        $("#dialog").dialog({
+            modal: true,
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "blind",
+                duration: 1000
+            },
+            position: { my: "center", at: "center", of: window },
+            minWidth: 800,
+            dialogClass: ".ui-dialog-osx"
+        });
+
+        //Open it when #opener is clicked
+        $("#opener").click(function () {
+            $("#dialog").dialog("open");
+        });
+
+        if ('error' in args) {
+            error("Sorry, I can't read your playlists from Spotify without authorization");
+            $("#go").show();
+            $("#go").on('click', function() {
+                authorizeUser();
+            });
+        } else if ('access_token' in args) {
+            accessToken = args['access_token'];
+            $(".worker").hide();
+            fetchCurrentUserProfile(function(user) {
+                if (user) {
+                    curUserID = user.id;
+                    $("#who").text(user.id);
+                    fetchPlaylistTracks([]);
+                    setInterval(function() {location.reload()}, 300000)
+                } else {
+                    error("Trouble getting the user profile");
+                }
+            });
+
+        } else {
+            $("#go").show();
+            $("#go").on('click', function() {
+                authorizeUser();
+            });
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>

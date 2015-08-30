@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css"
     href="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.css">
     <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="lib/jquery-ui.min.css">
+    <link rel="stylesheet" href="lib/jquery-ui.structure.min.css">
     <title>hamRadio</title>
     <!-- Custom styles for this template -->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -29,10 +31,32 @@
           </a>
         </div>
         <div class="navbar-collapse collapse">
-          <a href="http://www.spotify.com" class="btn btn-primary navbar-btn navbar-right">About
-          hamRadio</a>
+          <!-- <button rel="#aboutUs" type="button">About hamRadio</button> -->
+          <button id="opener" class="btn btn-primary navbar-btn navbar-right">About hamRadio</button>
         </div><!--/.navbar-collapse -->
       </div>
+    </div>
+
+    <div id="dialog">
+        <p> 
+        hamRadio: The Personal Radio
+        </p>
+        <br/>
+        <p>
+        Most streaming radio services are in an unfortunate state. People deal with subpar music recommendations because there is nothing better on the market. hamRadio is different. hamRadio makes music recommendations based on music similarity, time of day, and your personal music tastes. Our recommendations can be saved as a Spotify playlist so you're never left wondering "What's that song called again?" hamRadio is also interactive. Visualize the relation between the artists and music you are listening to and take back control of whats on your radio. And when your station is too amazing to keep to yourself, you can broadcast your station to your friends via social media. 
+        </p>
+        <br/>
+        <p>
+        That is our vision, but we need your help. We need data in order to learn what makes a personalized radio great. </p>
+        <br/>
+        <p>
+        Help us revolutionize internet radio by logging in to share your data! 
+        </p>
+        <br/>
+        <p>
+        Thanks!
+        </p><p> - Aakash, Sarthak, Matt, and JD
+        </p>
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -54,6 +78,21 @@
           </div>
       </div>
 
+ <!--        <div class="top jumbotron container-fluid">
+          <p id='info' class="text-center"></p>
+
+          <div class="worker" id='single-playlist'> 
+                <button type="button" id="Pop">Pop hamRadio</button>
+                <button type="button" id="RapRock">Rap Rock hamRadio</button>
+                <button type="button" id="HipHop">Hip Hop hamRadio</button>
+                <button type="button" id="IndiePop">Indie Pop hamRadio</button>
+                <button type="button" id="K-Pop">K-Pop hamRadio</button>
+                <button type="button" id="Hindi">Hindi hamRadio</button>
+                <h2> <a id='playlist-title'></a></h2>
+                <div id="playButton"></div>
+          </div>
+        </div> -->
+
 <!--     <div id="footer">
       <div class="container text-center">
             <p class="text-muted">
@@ -63,7 +102,9 @@
             </p>
       </div>
     </div> -->
+    
     <script src="lib/jquery-1.11.1.min.js"></script>
+    <!-- // <script type="text/javascript" charset="utf8" src="lib/overlay.js"></script> -->
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8"
@@ -72,13 +113,14 @@
         src="https://cdn.datatables.net/plug-ins/380cb78f450/sorting/time.js"></script>
     <script src="lib/bootstrap.min.js"></script>
     <script src="lib/underscore-min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
 
 <script>
 "use strict";
 var apiHost = 'http://localhost:8235'
 var apiHost = 'https://developer.echonest.com/api/v4'
 var accessToken = null;
-var isProduction = 1;
+var isProduction = 0;
 
 function error(msg) {
     info(msg);
@@ -92,10 +134,10 @@ function info(msg) {
 function authorizeUser() {
     var client_id = '7a8bd7164ef2412d832d7528184b788d';
     if (isProduction) {
-        var redirect_uri = 'http://hamradioapp.com';
+        var redirect_uri = 'http://hamradioapp.com/thankyou';
     } 
     else {
-        var redirect_uri = 'https://7cce9dcf58f6a02d81bca35c251241ad5c188e9a.googledrive.com/host/0B1SFF5AjEursUVkyaWpwazJPSGM/';
+        var redirect_uri = 'https://dcbd4964eebb73e7153afe60adafa0dec713fe35.googledrive.com/host/0B5MNbV4Tpw-vflZGWmc1cnhEQllaeTZxUUpWWTlMY3dSMnFvT2stTG02eEpQNERVQ0EyNDA/';
     }
     var scopes = 'playlist-read-private playlist-modify-private playlist-modify-public';
     var url = 'https://accounts.spotify.com/authorize?client_id=' + client_id +
@@ -164,7 +206,27 @@ $(document).ready(
 
     function() {
         var args = parseArgs();
+        //Initialize dialog
+        $("#dialog-message").dialog({
+            modal: true,
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "blind",
+                duration: 1000
+            },
+            position: { my: "center", at: "center", of: window },
+            minWidth: 800,
+            dialogClass: ".ui-dialog-osx"
+        });
 
+        //Open it when #opener is clicked
+        $("#opener").click(function () {
+            $("#dialog-message").dialog("open");
+        });
 
         if ('error' in args) {
             error("Sorry, I can't read your playlists from Spotify without authorization");

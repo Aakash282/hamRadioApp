@@ -113,5 +113,16 @@ view)
     cursor: pointer;
 }
 
+#dialog {
+    display:none;
+    color:white;
+    background: black;
+}
+
+.ui-dialog-osx {
+    -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px; border-width: 0 8px 8px 8px;
+}
 
 
