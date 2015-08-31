@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div id="opening-dialog">
+    <div id="dialog">
         <p> 
         hamRadio: The Personal Radio
         </p>
@@ -120,7 +120,7 @@
 var apiHost = 'http://localhost:8235'
 var apiHost = 'https://developer.echonest.com/api/v4'
 var accessToken = null;
-var isProduction = 1;
+var isProduction = 0;
 
 function error(msg) {
     info(msg);
@@ -207,7 +207,7 @@ $(document).ready(
     function() {
         var args = parseArgs();
         //Initialize dialog
-        $("#dialog-message").dialog({
+        $("#dialog").dialog({
             modal: true,
             autoOpen: false,
             show: {
@@ -225,7 +225,7 @@ $(document).ready(
 
         //Open it when #opener is clicked
         $("#opener").click(function () {
-            $("#dialog-message").dialog("open");
+            $("#dialog").dialog("open");
         });
 
         if ('error' in args) {
